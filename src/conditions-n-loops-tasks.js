@@ -605,7 +605,7 @@ function getNearestBigger(number) {
 
   let minI = 0;
   let minRight = rightSide[minI];
-  while (leftSide[leftSide.length - 1] > minRight) {
+  while (leftSide[leftSide.length - 1] >= minRight) {
     minI += 1;
     minRight = rightSide[minI];
   }
