@@ -568,8 +568,61 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const sNumber = `${number}`;
+
+  let index = sNumber.length - 1;
+  let endN = sNumber[index];
+  let prevN = sNumber[index - 1];
+
+  while (prevN >= endN) {
+    index -= 1;
+    if (index === 0) {
+      return number;
+    }
+    endN = sNumber[index];
+    prevN = sNumber[index - 1];
+  }
+
+  const leftSide = [];
+  const rightSide = [];
+
+  for (let i = 0; i < sNumber.length; i += 1) {
+    if (i < index) {
+      leftSide[i] = sNumber[i];
+    } else {
+      rightSide[i - index] = sNumber[i];
+    }
+  }
+
+  for (let i = 0; i < rightSide.length - 1; i += 1) {
+    for (let j = 0; j < rightSide.length - 1 - i; j += 1) {
+      if (rightSide[j + 1] < rightSide[j]) {
+        [rightSide[j], rightSide[j + 1]] = [rightSide[j + 1], rightSide[j]];
+      }
+    }
+  }
+
+  let minI = 0;
+  let minRight = rightSide[minI];
+  while (leftSide[leftSide.length - 1] > minRight) {
+    minI += 1;
+    minRight = rightSide[minI];
+  }
+
+  [leftSide[leftSide.length - 1], rightSide[minI]] = [
+    rightSide[minI],
+    leftSide[leftSide.length - 1],
+  ];
+
+  const minNumArr = [...leftSide, ...rightSide];
+  let minNum = '';
+
+  for (let i = 0; i < minNumArr.length; i += 1) {
+    minNum += minNumArr[i];
+  }
+
+  return +minNum;
 }
 
 module.exports = {
